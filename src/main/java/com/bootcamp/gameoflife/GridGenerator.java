@@ -8,6 +8,9 @@ import java.util.Set;
 
 public class GridGenerator {
 
+  private GridGenerator() {
+  }
+
   public static Grid generateGrid(String file) throws FileNotFoundException {
     Set<Cell> cells = new HashSet<>();
     int rows = 0;
