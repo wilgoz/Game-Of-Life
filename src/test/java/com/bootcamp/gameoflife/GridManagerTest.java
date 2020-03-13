@@ -28,13 +28,27 @@ public class GridManagerTest {
   @Test
   public void givenCellFileDisplayGridDisplaysCorrectCellFormations() throws FileNotFoundException {
     var grid = GridGenerator.generateGrid(PREAMBLE + "glider.txt");
-    GridManager gridManager = new GridManager(grid);
+    var gridManager = new GridManager(grid);
     String expected = ""
         + ". O . . . . \n"
         + ". . O . . . \n"
         + "O O O . . . \n"
         + ". . . . . . \n"
         + ". . . . . . \n";
+    gridManager.displayGrid();
+    Assert.assertEquals(expected, outContent.toString());
+  }
+  @Test
+  public void givenCellFileUpdateGridUpdatesTheCellFormations() throws FileNotFoundException {
+    var grid = GridGenerator.generateGrid(PREAMBLE + "glider.txt");
+    var gridManager = new GridManager(grid);
+    String expected = ""
+        + ". . . . . . \n"
+        + "O . O . . . \n"
+        + ". O O . . . \n"
+        + ". O . . . . \n"
+        + ". . . . . . \n";
+    gridManager.updateGrid();
     gridManager.displayGrid();
     Assert.assertEquals(expected, outContent.toString());
   }
