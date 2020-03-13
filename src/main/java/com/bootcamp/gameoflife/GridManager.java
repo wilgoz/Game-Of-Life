@@ -13,6 +13,8 @@ public class GridManager {
       {1, 1}, {1, -1}, {-1, -1}, {-1, 1}, {0, 1}, {0, -1}, {1, 0}, {-1, 0}
   };
 
+  private enum Row {TOP, BOTTOM}
+
   private Set<Cell> cells;
   private int rows;
   private int cols;
@@ -57,6 +59,14 @@ public class GridManager {
     });
   }
 
+  public void expandGrid() {
+    Arrays.stream(Row.values()).forEach(row -> {
+      if (shouldExpandRow(row)) {
+        expandRow(row);
+      }
+    });
+  }
+
   private List<Cell> getAdjacentCells(Cell cell, boolean alive) {
     return Arrays.stream(OFFSETS)
         .map(n -> {
@@ -66,5 +76,25 @@ public class GridManager {
           return cells.contains(adj) == alive ? adj : null;
         })
         .collect(Collectors.toList());
+  }
+
+  private boolean shouldExpandRow(Row row) {
+    boolean expand = false;
+    for (int col = 0; col < cols; col++) {
+      if (cells.contains(new Cell(row == Row.BOTTOM ? rows - 1 : 0, col))) {
+        expand = true;
+        break;
+      }
+    }
+    return expand;
+  }
+
+  private void expandRow(Row row) {
+    if (row == Row.TOP) {
+      cells = cells.stream()
+          .map(c -> new Cell(c.getRow() + 1, c.getCol()))
+          .collect(Collectors.toSet());
+    }
+    rows++;
   }
 }

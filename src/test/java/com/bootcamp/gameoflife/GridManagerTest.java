@@ -15,6 +15,11 @@ public class GridManagerTest {
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
   private final PrintStream originalOut = System.out;
 
+  private GridManager initGridManager(String file) throws FileNotFoundException {
+    var grid = GridGenerator.generateGrid(file);
+    return new GridManager(grid);
+  }
+
   @Before
   public void setUpStreams() {
     System.setOut(new PrintStream(outContent));
@@ -27,8 +32,7 @@ public class GridManagerTest {
 
   @Test
   public void givenCellFileDisplayGridDisplaysCorrectCellFormations() throws FileNotFoundException {
-    var grid = GridGenerator.generateGrid(PREAMBLE + "glider.txt");
-    var gridManager = new GridManager(grid);
+    var gridManager = initGridManager(PREAMBLE + "glider.txt");
     String expected = ""
         + ". O . . . . \n"
         + ". . O . . . \n"
@@ -38,10 +42,10 @@ public class GridManagerTest {
     gridManager.displayGrid();
     Assert.assertEquals(expected, outContent.toString());
   }
+
   @Test
   public void givenCellFileUpdateGridUpdatesTheCellFormations() throws FileNotFoundException {
-    var grid = GridGenerator.generateGrid(PREAMBLE + "glider.txt");
-    var gridManager = new GridManager(grid);
+    var gridManager = initGridManager(PREAMBLE + "glider.txt");
     String expected = ""
         + ". . . . . . \n"
         + "O . O . . . \n"
@@ -49,6 +53,44 @@ public class GridManagerTest {
         + ". O . . . . \n"
         + ". . . . . . \n";
     gridManager.updateGrid();
+    gridManager.displayGrid();
+    Assert.assertEquals(expected, outContent.toString());
+  }
+
+  @Test
+  public void givenCellThatTouchesBottomMostRowExpandGridShouldExpandBottomRow()
+      throws FileNotFoundException {
+    var gridManager = initGridManager(PREAMBLE + "glider-expand-bottom.txt");
+    String expected = ""
+        + ". . . . . . . . . . . . . . \n"
+        + ". . . . . . . . . . . . . . \n"
+        + ". . . . . . . . . . . . . . \n"
+        + ". . . . O . O . . . . . . . \n"
+        + ". . . . . O O . . . . . . . \n"
+        + ". . . . . O . . . . . . . . \n"
+        + ". . . . . . . . . . . . . . \n";
+    for (int i = 0; i < 5; i++) {
+      gridManager.updateGrid();
+      gridManager.expandGrid();
+    }
+    gridManager.displayGrid();
+    Assert.assertEquals(expected, outContent.toString());
+  }
+
+  @Test
+  public void givenCellThatTouchesTopMostRowExpandGridShouldExpandTopRow()
+      throws FileNotFoundException {
+    var gridManager = initGridManager(PREAMBLE + "glider-expand-top.txt");
+    String expected = ""
+        + ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . \n"
+        + ". . . . . . . . . . . . . O O . . . . . . . . . . . . . . \n"
+        + ". . . . . . . . . . . . . O . O . . . . . . . . . . . . . \n"
+        + ". . . . . . . . . . . . . O . . . . . . . . . . . . . . . \n"
+        + ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . \n";
+    for (int i = 0; i < 2; i++) {
+      gridManager.updateGrid();
+      gridManager.expandGrid();
+    }
     gridManager.displayGrid();
     Assert.assertEquals(expected, outContent.toString());
   }
