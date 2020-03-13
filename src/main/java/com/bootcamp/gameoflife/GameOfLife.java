@@ -6,9 +6,11 @@ public class GameOfLife {
 
   private GridManager gridManager;
   private double iterations;
+  private int delay;
 
-  public GameOfLife(String path, double iterations) throws FileNotFoundException {
+  public GameOfLife(String path, double iterations, int delay) throws FileNotFoundException {
     this.iterations = iterations;
+    this.delay = delay;
     gridManager = new GridManager(GridGenerator.generateGrid(path));
   }
 
@@ -17,7 +19,7 @@ public class GameOfLife {
       gridManager.displayGrid();
       gridManager.updateGrid();
       gridManager.expandGrid();
-      Thread.sleep(150);
+      Thread.sleep(delay);
       clearScreen();
     }
   }

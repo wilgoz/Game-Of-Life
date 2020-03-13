@@ -27,7 +27,7 @@ public class GameOfLifeTest {
 
   @Test
   public void testRunOutputsGrid() throws FileNotFoundException, InterruptedException {
-    var game = new GameOfLife(PREAMBLE + "glider.txt", 1);
+    var game = new GameOfLife(PREAMBLE + "glider.txt", 1, 1);
     String expected = ""
         + ". O . . . . \n"
         + ". . O . . . \n"

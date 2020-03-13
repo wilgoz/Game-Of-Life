@@ -1,30 +1,26 @@
 # Game of Life
+Naive Game of Life program written in Java. Supports an infinitely expanding grid.
 
-## Description
-A Game of Life program written in Java
+Cell pattern configurations in the form of .txt files can be found in:
+- src/main/java/assets
 
-## Constraints
-- Not runnable yet
-​
+`O` denotes a life cell while `.` denotes a dead cell.
+
+## Limitations
+- Drawing might not work properly on non-UNIX systems.
+
 ## Environment Setup
-
 - Java 11 (OpenJDK)
 - Gradle 5.2.1
 - JUnit 4
 ​
-## Build Instruction
-​
-To build this project, run this command
-```
-./gradlew build
-```
-
 ## Run Test
-​
-To run test, please run this command
 ```
 ./gradlew check
 ```
 
 ## Run Instruction
-TBD
+```
+./gradlew run
+```
+Executing the above command will run game of life with the glider gun cell pattern.

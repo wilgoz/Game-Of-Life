@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'jacoco'
+    id 'application'
     id 'com.github.ksoichiro.console.reporter' version '0.6.2'
 }
 jacoco {
@@ -11,6 +12,9 @@ repositories {
 }
 dependencies {
     testImplementation 'junit:junit:4.12'
+}
+application {
+    mainClassName = 'com.bootcamp.gameoflife.App'
 }
 test {
     dependsOn 'cleanTest'
@@ -23,6 +27,13 @@ jacocoTestReport {
         xml.enabled true
         html.enabled true
         csv.enabled true
+    }
+    afterEvaluate {
+        getClassDirectories().setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'com/bootcamp/gameoflife/App.class'
+            ])
+        }))
     }
 }
 check {
