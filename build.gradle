@@ -14,7 +14,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 application {
-    mainClassName = 'com.bootcamp.gameoflife.App'
+    mainClassName = 'com.willy.gameoflife.App'
 }
 test {
     dependsOn 'cleanTest'
@@ -31,7 +31,7 @@ jacocoTestReport {
     afterEvaluate {
         getClassDirectories().setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
-                    'com/bootcamp/gameoflife/App.class'
+                    'com/willy/gameoflife/App.class'
             ])
         }))
     }
