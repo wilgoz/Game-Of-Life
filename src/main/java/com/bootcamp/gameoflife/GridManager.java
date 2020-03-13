@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,8 @@ public class GridManager {
   };
 
   private enum Row {TOP, BOTTOM}
+
+  private enum Col {RIGHT, LEFT}
 
   private Set<Cell> cells;
   private int rows;
@@ -65,16 +68,20 @@ public class GridManager {
         expandRow(row);
       }
     });
+    Arrays.stream(Col.values()).forEach(col -> {
+      if (shouldExpandCol(col)) {
+        expandCol(col);
+      }
+    });
   }
 
   private List<Cell> getAdjacentCells(Cell cell, boolean alive) {
     return Arrays.stream(OFFSETS)
         .map(n -> {
-          int nextRow = cell.getRow() + n[0];
-          int nextCol = cell.getCol() + n[1];
-          var adj = new Cell(nextRow, nextCol);
+          var adj = new Cell(cell.getRow() + n[0], cell.getCol() + n[1]);
           return cells.contains(adj) == alive ? adj : null;
         })
+        .filter(Objects::nonNull)
         .collect(Collectors.toList());
   }
 
@@ -89,6 +96,17 @@ public class GridManager {
     return expand;
   }
 
+  private boolean shouldExpandCol(Col col) {
+    boolean expand = false;
+    for (int row = 0; row < rows; row++) {
+      if (cells.contains(new Cell(row, col == Col.RIGHT ? cols - 1 : 0))) {
+        expand = true;
+        break;
+      }
+    }
+    return expand;
+  }
+
   private void expandRow(Row row) {
     if (row == Row.TOP) {
       cells = cells.stream()
@@ -96,5 +114,14 @@ public class GridManager {
           .collect(Collectors.toSet());
     }
     rows++;
+  }
+
+  private void expandCol(Col col) {
+    if (col == Col.LEFT) {
+      cells = cells.stream()
+          .map(c -> new Cell(c.getRow(), c.getCol() + 1))
+          .collect(Collectors.toSet());
+    }
+    cols++;
   }
 }

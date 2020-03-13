@@ -94,4 +94,41 @@ public class GridManagerTest {
     gridManager.displayGrid();
     Assert.assertEquals(expected, outContent.toString());
   }
+
+  @Test
+  public void givenCellThatTouchesRightMostColExpandGridShouldExpandRightCol()
+      throws FileNotFoundException {
+    var gridManager = initGridManager(PREAMBLE + "glider-expand-right.txt");
+    String expected = ""
+        + ". . . . . . . . \n"
+        + ". . . . . . . . \n"
+        + ". . . . O . . . \n"
+        + ". . . . . O O . \n"
+        + ". . . . O O . . \n"
+        + ". . . . . . . . \n";
+    for (int i = 0; i < 3; i++) {
+      gridManager.updateGrid();
+      gridManager.expandGrid();
+    }
+    gridManager.displayGrid();
+    Assert.assertEquals(expected, outContent.toString());
+  }
+
+  @Test
+  public void givenCellThatTouchesLeftMostColExpandGridShouldExpandLeftCol()
+      throws FileNotFoundException {
+    var gridManager = initGridManager(PREAMBLE + "glider-expand-left.txt");
+    String expected = ""
+        + ". . . . . . . . . . . . . . . . . . \n"
+        + ". . O O . . . . . . . . . . . . . . \n"
+        + ". O O . . . . . . . . . . . . . . . \n"
+        + ". . . O . . . . . . . . . . . . . . \n"
+        + ". . . . . . . . . . . . . . . . . . \n";
+    for (int i = 0; i < 3; i++) {
+      gridManager.updateGrid();
+      gridManager.expandGrid();
+    }
+    gridManager.displayGrid();
+    Assert.assertEquals(expected, outContent.toString());
+  }
 }
