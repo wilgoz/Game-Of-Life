@@ -1,4 +1,4 @@
-package com.willy.gameoflife;
+package com.willy.gameoflife.models;
 
 public enum State {
     ALIVE('O'), DEAD('.');
